@@ -11,6 +11,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:video_player/video_player.dart';
 
+Future<void> main() async {
+  // Fetch the available cameras before initializing the app.
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    _cameras = await availableCameras();
+  } on CameraException catch (e) {
+    _logError(e.code, e.description);
+  }
+  runApp(const MyApp());
+}
+
+List<CameraDescription> _cameras = <CameraDescription>[];
+
+/// CameraApp is the Main Application.
+class MyApp extends StatelessWidget {
+  /// Default Constructor
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: CameraExampleHome(),
+    );
+  }
+}
+
 /// Camera example home widget.
 class CameraExampleHome extends StatefulWidget {
   /// Default Constructor
@@ -1044,30 +1070,4 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     _logError(e.code, e.description);
     showInSnackBar('Error: ${e.code}\n${e.description}');
   }
-}
-
-/// CameraApp is the Main Application.
-class MyApp extends StatelessWidget {
-  /// Default Constructor
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CameraExampleHome(),
-    );
-  }
-}
-
-List<CameraDescription> _cameras = <CameraDescription>[];
-
-Future<void> main() async {
-  // Fetch the available cameras before initializing the app.
-  try {
-    WidgetsFlutterBinding.ensureInitialized();
-    _cameras = await availableCameras();
-  } on CameraException catch (e) {
-    _logError(e.code, e.description);
-  }
-  runApp(const MyApp());
 }
