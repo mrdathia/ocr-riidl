@@ -9,6 +9,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:ocr_riidl/screens/captureScreen.dart';
+import 'package:ocr_riidl/screens/copyInterests.dart';
+import 'package:ocr_riidl/screens/historyScreen.dart';
 import 'package:video_player/video_player.dart';
 
 Future<void> main() async {
@@ -31,8 +34,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CameraExampleHome(),
+    return MaterialApp(
+      // home: CameraExampleHome(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: 'capturePage',
+      onGenerateRoute: (settings) {
+        if (settings.name == 'capturePage') {
+          return PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                      Animation<double> secondaryAnimation) =>
+                  CaptureScreen(_cameras));
+        }
+        if (settings.name == 'copyTextPage') {
+          XFile imageFile = settings.arguments as XFile;
+
+          return PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                      Animation<double> secondaryAnimation) =>
+                  CopyInterests(imageFile));
+        }
+        if (settings.name == 'historyPage') {
+          return PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                      Animation<double> secondaryAnimation) =>
+                  HistoryScreen());
+        }
+        return null;
+      },
     );
   }
 }
