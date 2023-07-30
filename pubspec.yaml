@@ -38,6 +38,10 @@ dependencies:
   camera: any
   video_player: any
   google_fonts: any
+  firebase_core: any
+  google_ml_kit: any
+  sqflite: ^2.3.0
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +64,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
