@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "984815447358",
+    "project_id": "ocr-riidl",
+    "storage_bucket": "ocr-riidl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984815447358:android:bed1962d4bfe1b3874906f",
+        "android_client_info": {
+          "package_name": "com.example.ocr_riidl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984815447358-p1avuaa9gplh5d7lrdnq43e5691b6c5n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9lRdIFzTUVjfV3wBMNAG3IKaxObuwN7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984815447358-p1avuaa9gplh5d7lrdnq43e5691b6c5n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
