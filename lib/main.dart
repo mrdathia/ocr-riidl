@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +29,13 @@ Future<void> main() async {
       // Run the CREATE TABLE statement on the database.
       return db.execute("CREATE TABLE `ocrhistory` "
           "("
-          "`id` INT AUTO_INCREMENT,"
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT ,"
           "`imgpath` VARCHAR(100) DEFAULT '',"
-          "`saved` BOOLEAN DEFAULT 'false',"
-          "`deleted` BOOLEAN DEFAULT 'false',"
-          "`createdat` DATETIME,"
-          "`updatedat` DATETIME,"
-          "PRIMARY KEY (`id`)"
+          "`filename` VARCHAR(100),"
+          "`saved` INT,"
+          "`deleted` INT,"
+          "`createdat` VARCHAR(50),"
+          "`updatedat` VARCHAR(50)"
           ")"
           ";");
     },
@@ -44,7 +43,7 @@ Future<void> main() async {
     // path to perform database upgrades and downgrades.
     version: 1,
   );
-  print(database.path);
+  print(join(await getDatabasesPath(), 'ocrriidl.db'));
   runApp(const MyApp());
 }
 
