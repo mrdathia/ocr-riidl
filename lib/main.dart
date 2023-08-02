@@ -10,6 +10,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:video_player/video_player.dart';
 
+import 'models/history.dart';
+
 Future<void> main() async {
   // Fetch the available cameras before initializing the app.
   try {
@@ -68,12 +70,18 @@ class MyApp extends StatelessWidget {
                   CaptureScreen(_cameras));
         }
         if (settings.name == 'copyTextPage') {
-          XFile imageFile = settings.arguments as XFile;
-
+          History history = History();
+          if (settings.arguments.runtimeType != History) {
+            history = settings.arguments as History;
+          } else {
+            XFile imageFile = settings.arguments as XFile;
+            history.fileName = imageFile.name;
+            history.imgPath = imageFile.path;
+          }
           return PageRouteBuilder(
               pageBuilder: (BuildContext context, Animation<double> animation,
                       Animation<double> secondaryAnimation) =>
-                  CopyInterests(imageFile));
+                  CopyInterests(history));
         }
         if (settings.name == 'historyPage') {
           return PageRouteBuilder(

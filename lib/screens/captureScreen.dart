@@ -70,7 +70,10 @@ class _CaptureScreenState extends State<CaptureScreen>
     // _focusModeControlRowAnimation = CurvedAnimation(
     //   parent: _focusModeControlRowAnimationController,
     //   curve: Curves.easeInCubic,
-    // );
+    // );eset)
+    onNewCameraSelected(widget.cameras.firstWhere((element) =>
+        element.lensDirection == CameraLensDirection.back ||
+        element.lensDirection == CameraLensDirection.external));
   }
 
   @override
@@ -557,7 +560,16 @@ class _CaptureScreenState extends State<CaptureScreen>
       }
     }
 
-    return Row(children: toggles);
+    if (widget.cameras
+            .where((element) =>
+                element.lensDirection == CameraLensDirection.external ||
+                element.lensDirection == CameraLensDirection.back)
+            .length >
+        1) {
+      return Row(children: toggles);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
@@ -692,7 +704,7 @@ class _CaptureScreenState extends State<CaptureScreen>
       _flashModeControlRowAnimationController.reverse();
     } else {
       _flashModeControlRowAnimationController.forward();
-      _exposureModeControlRowAnimationController.reverse();
+      //_exposureModeControlRowAnimationController.reverse();
       _focusModeControlRowAnimationController.reverse();
     }
   }
@@ -1010,6 +1022,24 @@ class _CaptureScreenState extends State<CaptureScreen>
     return Scaffold(
       backgroundColor: hexToColor(AppColors.bgColor),
       appBar: AppBar(
+        leading: InkWell(
+          onTap: () {},
+          child: Icon(
+            Icons.history_rounded,
+            weight: 0.6,
+            color: hexToColor("#DDDDDD"),
+          ),
+        ),
+        actions: [
+          InkWell(
+            onTap: () {},
+            child: Icon(
+              Icons.history_rounded,
+              weight: 0.6,
+              color: hexToColor("#DDDDDD"),
+            ),
+          ),
+        ],
         backgroundColor: hexToColor(AppColors.bgColor),
         centerTitle: true,
         title: Text(

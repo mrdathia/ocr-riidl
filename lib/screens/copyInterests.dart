@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
+//import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,8 +17,10 @@ import '../utils/styleConstants.dart';
 //import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class CopyInterests extends StatefulWidget {
-  final XFile imageFile;
-  const CopyInterests(this.imageFile, {super.key});
+  final History tHistory;
+  // final int id;
+  const CopyInterests(this.tHistory, {super.key});
+  // CopyInterests(this.imageFile,this.id {super.key});
 
   @override
   _CopyInterestsState createState() => _CopyInterestsState();
@@ -36,7 +38,7 @@ class _CopyInterestsState extends State<CopyInterests> {
 
   _insertInDB() async {
     history.createdAt = history.updatedAt = DateTime.timestamp().toString();
-    history.imgPath = widget.imageFile.path;
+    history.imgPath = widget.tHistory.imgPath;
     history.saved = history.deleted = 0;
     history.fileName = fileName.text;
     final db = await openDatabase(
@@ -79,7 +81,7 @@ class _CopyInterestsState extends State<CopyInterests> {
     //
     // In this case, replace any previous data.
     history.updatedAt = DateTime.timestamp().toString();
-    history.imgPath = widget.imageFile.path;
+    history.imgPath = widget.tHistory.imgPath;
     history.fileName = fileName.text;
     history.saved = 1;
     print("temp ${history.toJson().toString()}");
@@ -120,17 +122,17 @@ class _CopyInterestsState extends State<CopyInterests> {
 
   _getInterests() async {
     history = History();
-    final imageFile = widget.imageFile.path;
-    final inp = InputImage.fromFile(File(imageFile));
+    String? imageFilePath = widget.tHistory.imgPath;
+    final inp = InputImage.fromFile(File(imageFilePath!));
     RecognizedText recogTxt = await txt.processImage(inp);
     if (kDebugMode) {
       print(recogTxt.text);
     }
 
     setState(() {
-      fileName.text = widget.imageFile.name
+      fileName.text = widget.tHistory.fileName
           .toString()
-          .substring(0, widget.imageFile.name.indexOf("."));
+          .substring(0, widget.tHistory.fileName?.indexOf("."));
       recognizedText.text = recogTxt.text;
       txt.close();
     });
@@ -159,7 +161,7 @@ class _CopyInterestsState extends State<CopyInterests> {
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.3,
-                child: Image.file(File(widget.imageFile.path)),
+                child: Image.file(File(widget.tHistory.imgPath.toString())),
               ),
               Align(
                 alignment: Alignment.centerLeft,
