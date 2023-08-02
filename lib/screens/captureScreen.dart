@@ -772,14 +772,14 @@ class _CaptureScreenState extends State<CaptureScreen>
   //   });
   // }
 
-  void onSetFocusModeButtonPressed(FocusMode mode) {
-    setFocusMode(mode).then((_) {
-      if (mounted) {
-        setState(() {});
-      }
-      showInSnackBar('Focus mode set to ${mode.toString().split('.').last}');
-    });
-  }
+  // void onSetFocusModeButtonPressed(FocusMode mode) {
+  //   setFocusMode(mode).then((_) {
+  //     if (mounted) {
+  //       setState(() {});
+  //     }
+  //     showInSnackBar('Focus mode set to ${mode.toString().split('.').last}');
+  //   });
+  // }
 
   // void onVideoRecordButtonPressed() {
   //   startVideoRecording().then((_) {
@@ -1017,22 +1017,26 @@ class _CaptureScreenState extends State<CaptureScreen>
     showInSnackBar('Error: ${e.code}\n${e.description}');
   }
 
+  goToHistory() {
+    Navigator.of(context).pushNamed("historyPage");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: hexToColor(AppColors.bgColor),
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () {},
-          child: Icon(
-            Icons.history_rounded,
-            weight: 0.6,
-            color: hexToColor("#DDDDDD"),
-          ),
-        ),
+        // leading: InkWell(
+        //   onTap: () {},
+        //   child: Icon(
+        //     Icons.history_rounded,
+        //     weight: 0.6,
+        //     color: hexToColor("#DDDDDD"),
+        //   ),
+        // ),
         actions: [
           InkWell(
-            onTap: () {},
+            onTap: goToHistory,
             child: Icon(
               Icons.history_rounded,
               weight: 0.6,
@@ -1070,10 +1074,11 @@ class _CaptureScreenState extends State<CaptureScreen>
                 color: Colors.black,
                 border: Border.all(
                   color:
-                      controller != null && controller!.value.isRecordingVideo
-                          ? Colors.redAccent
-                          : Colors.grey,
-                  width: 3.0,
+                      // controller != null && controller!.value.isRecordingVideo
+                      //     ? Colors.redAccent
+                      //     : Colors.grey,
+                      Colors.grey,
+                  width: 0.10,
                 ),
               ),
               child: Padding(

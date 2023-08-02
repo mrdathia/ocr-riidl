@@ -31,30 +31,35 @@ class _CopyInterestsState extends State<CopyInterests> {
       TextEditingController(text: 'Recognizing...');
   TextEditingController fileName = TextEditingController();
   final txt = TextRecognizer();
-  late History history;
-  int? sqlID;
 
-  get text => null;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _getInterests();
+  }
 
   _insertInDB() async {
-    history.createdAt = history.updatedAt = DateTime.timestamp().toString();
-    history.imgPath = widget.tHistory.imgPath;
-    history.saved = history.deleted = 0;
-    history.fileName = fileName.text;
+    widget.tHistory.createdAt =
+        widget.tHistory.updatedAt = DateTime.timestamp().toString();
+    widget.tHistory.imgPath = widget.tHistory.imgPath;
+    widget.tHistory.saved = widget.tHistory.deleted = 0;
+    widget.tHistory.fileName = fileName.text;
     final db = await openDatabase(
       join(await getDatabasesPath(), 'ocrriidl.db'),
     );
-    history.id = await db.insert(
+    widget.tHistory.id = await db.insert(
       'ocrhistory',
-      history.toJson(),
+      widget.tHistory.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print("returned id: ${history.id}");
-    for (History his in await storedHistory()) {
-      if (kDebugMode) {
-        print(his.toJson().toString());
-      }
-    }
+    print("returned id: ${widget.tHistory.id}");
+    // for (History his in await storedHistory()) {
+    //   if (kDebugMode) {
+    //     print(his.toJson().toString());
+    //   }
+    // }
   }
 
   Future<List<History>> storedHistory() async {
@@ -80,27 +85,27 @@ class _CopyInterestsState extends State<CopyInterests> {
     // `conflictAlgorithm` to use in case the same dog is inserted twice.
     //
     // In this case, replace any previous data.
-    history.updatedAt = DateTime.timestamp().toString();
-    history.imgPath = widget.tHistory.imgPath;
-    history.fileName = fileName.text;
-    history.saved = 1;
-    print("temp ${history.toJson().toString()}");
+    widget.tHistory.updatedAt = DateTime.timestamp().toString();
+    widget.tHistory.imgPath = widget.tHistory.imgPath;
+    widget.tHistory.fileName = fileName.text;
+    widget.tHistory.saved = 1;
+    print("temp ${widget.tHistory.toJson().toString()}");
     final db = await openDatabase(
       join(await getDatabasesPath(), 'ocrriidl.db'),
     );
     await db.update(
       'ocrhistory',
-      history.toJson(),
+      widget.tHistory.toJson(),
       // Ensure that the Dog has a matching id.
       where: 'id = ?',
-      whereArgs: [history.id],
+      whereArgs: [widget.tHistory.id],
       // conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    for (History his in await storedHistory()) {
-      if (kDebugMode) {
-        print(his.toJson().toString());
-      }
-    }
+    // for (History his in await storedHistory()) {
+    //   if (kDebugMode) {
+    //     print(his.toJson().toString());
+    //   }
+    // }
     Navigator.of(context).pushReplacementNamed("historyPage");
   }
 
@@ -111,7 +116,7 @@ class _CopyInterestsState extends State<CopyInterests> {
     await db.delete(
       'ocrhistory',
       where: 'id = ?',
-      whereArgs: [history.id],
+      whereArgs: [widget.tHistory.id],
     );
     for (History his in await storedHistory()) {
       if (kDebugMode) {
@@ -121,7 +126,6 @@ class _CopyInterestsState extends State<CopyInterests> {
   }
 
   _getInterests() async {
-    history = History();
     String? imageFilePath = widget.tHistory.imgPath;
     final inp = InputImage.fromFile(File(imageFilePath!));
     RecognizedText recogTxt = await txt.processImage(inp);
@@ -130,21 +134,14 @@ class _CopyInterestsState extends State<CopyInterests> {
     }
 
     setState(() {
-      fileName.text = widget.tHistory.fileName
-          .toString()
-          .substring(0, widget.tHistory.fileName?.indexOf("."));
+      fileName.text = widget.tHistory.fileName!;
       recognizedText.text = recogTxt.text;
       txt.close();
     });
-    await _insertInDB();
-  }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    _getInterests();
+    if (widget.tHistory.id == null) {
+      await _insertInDB();
+    }
   }
 
   @override
@@ -184,7 +181,7 @@ class _CopyInterestsState extends State<CopyInterests> {
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
                 onChanged: (data) async {
-                  history.fileName = data;
+                  widget.tHistory.fileName = data;
                 },
               ),
               Container(
@@ -234,7 +231,7 @@ class _CopyInterestsState extends State<CopyInterests> {
     );
   }
 
-  // Future<Uint8List> getImageBytes(imageFile) async {
-  //   Uint8List = await imageFile.readAsBytes();
-  // }
+// Future<Uint8List> getImageBytes(imageFile) async {
+//   Uint8List = await imageFile.readAsBytes();
+// }
 }

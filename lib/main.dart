@@ -8,7 +8,6 @@ import 'package:ocr_riidl/screens/copyInterests.dart';
 import 'package:ocr_riidl/screens/historyScreen.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:video_player/video_player.dart';
 
 import 'models/history.dart';
 
@@ -33,13 +32,14 @@ Future<void> main() async {
           "("
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT ,"
           "`imgpath` VARCHAR(100) DEFAULT '',"
-          "`filename` VARCHAR(100),"
+          "`filename` VARCHAR(100) ,"
           "`saved` INT,"
           "`deleted` INT,"
           "`createdat` VARCHAR(50),"
           "`updatedat` VARCHAR(50)"
           ")"
-          ";");
+          ";"
+          "select * from 'ocrhistory");
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
@@ -71,11 +71,12 @@ class MyApp extends StatelessWidget {
         }
         if (settings.name == 'copyTextPage') {
           History history = History();
-          if (settings.arguments.runtimeType != History) {
+          if (settings.arguments.runtimeType == History) {
             history = settings.arguments as History;
           } else {
             XFile imageFile = settings.arguments as XFile;
-            history.fileName = imageFile.name;
+            history.fileName =
+                imageFile.name.substring(0, imageFile.name.indexOf("."));
             history.imgPath = imageFile.path;
           }
           return PageRouteBuilder(

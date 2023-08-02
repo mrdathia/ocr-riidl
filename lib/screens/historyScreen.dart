@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ocr_riidl/utils/appColors.dart';
 import 'package:ocr_riidl/utils/appTools.dart';
 import 'package:ocr_riidl/utils/styleConstants.dart';
 import 'package:path/path.dart';
@@ -15,11 +16,6 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   late List<History> histories;
-
-  edit(BuildContext context, History history) {
-    Navigator.of(context)
-        .pushReplacementNamed("copyTextPage", arguments: history);
-  }
 
   Future<List<History>> storedHistory() async {
     final db =
@@ -45,19 +41,44 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: hexToColor("#121212"),
+        backgroundColor: hexToColor(AppColors.bgColor),
+        appBar: AppBar(
+          backgroundColor: hexToColor(AppColors.bgColor),
+          centerTitle: true,
+          title: Text(
+            "Capture History",
+            softWrap: true,
+            style: kGoogleStyleTexts.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 23,
+              color: hexToColor(AppColors.white),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          elevation: 0,
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Divider(
+              height: 1,
+              thickness: 0.75,
+              color: Colors.black,
+            ),
+          ),
+        ),
         body: FutureBuilder(
           future: storedHistory(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               histories = snapshot.data!;
+              histories =
+                  histories.where((element) => element.saved == 1).toList();
               return ListView.builder(
                 itemCount: histories.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                      onTap: edit(context, histories[index]),
+                      onTap: () => {},
                       child: ListTile(
                         tileColor: hexToColor("#1a1a1a"),
                         leading: Image.file(
