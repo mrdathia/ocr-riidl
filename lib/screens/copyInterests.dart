@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ocr_riidl/models/history.dart';
 import 'package:ocr_riidl/utils/actionTextButton.dart';
+import 'package:ocr_riidl/utils/appColors.dart';
 import 'package:ocr_riidl/utils/appTools.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:ocr_riidl/utils/textFormField.dart';
@@ -147,9 +148,9 @@ class _CopyInterestsState extends State<CopyInterests> {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: ScrollBehavior(),
+      behavior: const ScrollBehavior(),
       child: Scaffold(
-        backgroundColor: hexToColor("#121212"),
+        backgroundColor: hexToColor(AppColors.bgColor),
         body: SingleChildScrollView(
           child: Column(
             children: [

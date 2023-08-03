@@ -684,6 +684,7 @@ class _CaptureScreenState extends State<CaptureScreen>
       if (mounted) {
         setState(() {
           imageFile = file;
+
           // videoController?.dispose();
           // videoController = null;
         });
@@ -802,24 +803,24 @@ class _CaptureScreenState extends State<CaptureScreen>
   //   });
   // }
 
-  // Future<void> onPausePreviewButtonPressed() async {
-  //   final CameraController? cameraController = controller;
-  //
-  //   if (cameraController == null || !cameraController.value.isInitialized) {
-  //     showInSnackBar('Error: select a camera first.');
-  //     return;
-  //   }
-  //
-  //   if (cameraController.value.isPreviewPaused) {
-  //     await cameraController.resumePreview();
-  //   } else {
-  //     await cameraController.pausePreview();
-  //   }
-  //
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
+  Future<void> onPausePreviewButtonPressed() async {
+    final CameraController? cameraController = controller;
+
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      showInSnackBar('Error: select a camera first.');
+      return;
+    }
+
+    if (cameraController.value.isPreviewPaused) {
+      await cameraController.resumePreview();
+    } else {
+      await cameraController.pausePreview();
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
   //
   // void onPauseButtonPressed() {
   //   pauseVideoRecording().then((_) {
